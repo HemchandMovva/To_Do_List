@@ -1,0 +1,265 @@
+
+<html>
+
+<head>
+
+    <title> Task Management Application </title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js" ></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+
+        .container{
+            display:flex;
+            border:1px solid green;
+            height:95%;
+            margin:0px;
+            padding:0px;
+          
+        }
+        .left{
+            width:40%;
+            height:100%;
+            background-image:linear-gradient(to right,pink,yellow);
+           
+        }
+
+        .right{
+            width:70%;
+            height:100%;
+            background-image:linear-gradient(to right,aqua,pink);
+            overflow-y:auto;
+            overflow-x:auto;
+        }
+       
+        .Title{
+            width:90%;
+            height:50px;
+            font-size:25px;
+            color:darkmagenta;
+            margin:20px;
+            border-width:3x;
+            border-image:linear-gradient(45deg,green,blue) 1;  
+        }
+
+        .irri{
+            width:90%;
+            height:50px;
+            margin:20px;
+            font-size:25px;
+            color:darkgreen;
+            border-width:3x;
+            border-image:linear-gradient(45deg,green,blue) 1; 
+        }
+
+        h2{
+            margin:20px;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            color:blueviolet;
+            text-transform:uppercase;
+        }
+
+        .btm{
+            display:flex;
+            justify-content:center;
+        }
+
+        .add_task{
+            position:absolute;
+            height:50px;
+            background-color:violet;
+            color:white;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            border-radius:20px;
+            animation-name:example;
+            animation-duration:4s;
+            animation-iteration-count:infinite;
+        }
+
+        @keyframes example {
+            0%   {background-color: red; border-color:red ; }
+            25%  {background-color: lightsalmon; border-color:lightsalmon}
+            50%  {background-color:orange; border-color:orange}
+            75%  {background-color:darkcyan ; border-color:darkcyan}
+            100% {background-color: skyblue; border-color:skyblue}
+        }
+        .add_task:hover{
+            cursor:pointer;
+            transition:0.7s;
+            transform:rotate(360deg);
+            animation-name: example;
+            animation-duration:4s;
+            animation-iteration-count:infinite;
+            box-shadow: 5px 4px 50px orange;
+        }
+
+       
+
+        td,tr{
+            border:1px solid red;
+        }
+
+        table{
+            width:100%;
+        }
+
+        .tr{
+            height:100px;
+        }
+
+        td{
+            color:darkslateblue;
+            font-weight:bold;
+            font-size:20px;
+        }
+        .table_title{
+            width:50%;
+        }
+        
+        .status{
+            width:20%;
+            text-align:center;
+        }
+
+        .edit{
+            width:10%;
+            text-align:center;
+            font-size:30px;
+        }
+
+        .delete{
+            width:10%;
+            text-align:center;
+            font-size:30px;
+             
+        }
+
+        .delete:hover{
+            background-color:red;
+            cursor:pointer;
+        }
+
+        .edit:hover{
+            background-color:aquamarine;
+            cursor:pointer;
+        }
+
+        h1{
+            font-size:30px;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            font-weight:strong;
+            color:white;
+            text-transform:uppercase;
+
+        }
+        .right_head{
+            text-align:center;
+        }
+
+        @media only screen and (max-width:620px){
+            .left, .right{
+                width:100%;
+            }
+        }
+      
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Left side -->
+        <div class="left">
+
+            <div class="right_head">
+                <h1> Add Task</h1>
+            </div>
+            
+            <br><br>
+            
+            <h2> Title:</h2>
+            <input type="text" class="Title" id="task"></input>
+          
+            <h2> Status:</h2>
+            <select class="irri" required>
+                <option selected disabled> --Select--</option>
+                <option> To do</option>
+                <option> In progress</option>
+                <option> Completed</option>
+            </select>
+            
+            <br><br>
+            <div class="btm">
+                <input type="button" value="ADD TASK" class="add_task" ></input>
+            </div>
+        </div>
+
+        <!-- Right side -->
+        <div class="right">
+
+            <div class="right_head">
+                <h1> Your Tasks</h1>
+            </div>
+            
+            <br><br><br>
+            
+            <table class="task_table">
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        $(document).ready(function(){
+            $(".add_task").click(function(){
+                
+
+                // Storing the input values
+                var title=$("#task").val();
+                var stat=$(".irri").val();
+
+                //Creating the table rows and datas
+                var row = $('<tr class="tr"> </tr>');
+                var col1 = $('<td class="table_title"> </td>');
+                var col2 = $('<td class="status"> </td>');
+                var col3 = $('<td class="edit"> </td>');
+                var col4 = $('<td class="delete"> </td>');
+
+               //Adding the input values to column1 and column2
+                col1.text(title);
+                col2.text(stat);
+
+                // Adding symbols to column3 and column4
+                col4.append('<i class="fa fa-trash-o" aria-hidden="true"></i>');
+
+                //Appending the columns to the row
+                row.append(col1,col2,col4);
+                
+                //Appending the row to the table
+                $(".task_table").append(row);
+
+                $(".task_table").on('click','.delete',function(){
+                    $(this).closest('tr').remove();
+                });
+
+                $('#task').val("");
+            
+
+            });
+            
+        });
+        
+    </script>
+</body>
+
+</html
